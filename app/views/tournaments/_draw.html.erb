@@ -1,0 +1,13 @@
+<% if game.round > 1 %>
+
+  <%= render :partial=>'draw', :locals=> {:game=>game.first_players_previous_game}%>
+  <%= render :partial=>'player_in_draw', :locals=> {:player=>game.winner, :round=>game.round, :game=>game}%>
+  <%= render :partial=>'draw', :locals=> {:game=>game.second_players_previous_game}%>
+
+<% else %>
+
+  <%= render :partial=>'player_in_draw', :locals=> {:player=>game.player1, :round=>game.round-1, :game=>game}%>
+  <%= render :partial=>'player_in_draw', :locals=> {:player=>game.winner, :round=>game.round, :game=>game}%>
+  <%= render :partial=>'player_in_draw', :locals=> {:player=>game.player2, :round=>game.round-1, :game=>game}%>
+
+<% end %>

@@ -1,0 +1,12 @@
+<h1>Tournament Draw</h1>
+
+
+<table>
+  <tr>
+    <% 1.upto(@championship_game.round) { |round|%><th><%= Game.round_in_words(round)%></th> <% }%>
+    <th>Champion</td>
+  </tr>
+  
+  <%= render :partial=> 'draw', :locals => {:game=>@championship_game}%>
+</table>
+

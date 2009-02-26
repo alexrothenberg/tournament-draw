@@ -1,0 +1,20 @@
+Manage a single-elimination tournament draw (like a tennis tournament or the NCAA March Madness).
+
+This is currently very rough and needs to be cleaned up if it goes forward
+
+============= TO DOs
+
+* UI needs work
+* Tests needed
+* UI for loading player names
+* If you don't have a power-of-2 number of players need to decide how to allocate byes fairly
+* Should it host more than 1 tournament?
+
+============= To Use
+Initialize your data
+* Edit the file lib/names.txt
+* Run 'rake create_tournament
+Run
+* Start your server
+http://localhost:3000/  will show the draw.  Games that have 2 players (the previous game was decided) are links you can click to assign a winner
+http://localhost:3000/players is scaffolding to let you manage players (change names is all that makes sense)

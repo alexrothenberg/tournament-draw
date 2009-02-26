@@ -1,0 +1,14 @@
+<h1>Who Won?</h1>
+
+<% form_for(@game) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.radio_button :winner_id, @game.player1_id %> <%= @game.player1.name%><br />
+    <%= f.radio_button :winner_id, @game.player2_id %> <%= @game.player2.name%><br />
+  <p>
+    <%= f.submit "Update" %><%= link_to 'Cancel', games_path %>
+    
+  </p>
+<% end %>
+
