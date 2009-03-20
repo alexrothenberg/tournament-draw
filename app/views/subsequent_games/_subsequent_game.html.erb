@@ -1,14 +1,22 @@
-<div class="span-3<%= " last" if subsequent_game.round == Game.final.round %>">
-	<br><%= Game.round_in_words(subsequent_game.round) %></br>
+<span class="<%= "round-#{subsequent_game.round}-spacer" %>"></span>
+<span class="<%= "player-spacer" %>"></span>
+<span class="<%= "round-#{subsequent_game.round}-game left_border" %>">
+  <span class="<%= "round-#{subsequent_game.round}-above-player-spacer" %>"></span>
+  <p class="player"><%= (show_winner(subsequent_game.children[0])) %></p>
+</span>
+<span class="<%= "round-#{subsequent_game.round}-spacer" %>"></span>
 
-  <%- decorate = cycle('odd','even') %>
-  <span class="round-<%= subsequent_game.round+1 %> <%= decorate %>-above"></span>
-  <p class="<%= decorate %>"><%= (show_winner(subsequent_game.children[0])) %></p>
-  <span class="round-<%= subsequent_game.round+1 %> <%= decorate %>-below"></span>
 
-  <%- decorate = cycle('odd','even') %>
-  <span class="round-<%= subsequent_game.round+1 %> <%= decorate %>-above"></span>
-  <p class="<%= decorate %>"><%= (show_winner(subsequent_game.children[1])) %></p>
-  <span class="round-<%= subsequent_game.round+1 %> <%= decorate %>-below"></span>
+<span class="<%= "round-#{subsequent_game.round}-between-spacer" %>"></span>
 
-</div>
+
+<span class="<%= "round-#{subsequent_game.round}-spacer" %>"></span>
+<span class="<%= "player-spacer" %>"></span>
+<span class="<%= "round-#{subsequent_game.round}-game left_border" %>">
+  <span class="<%= "round-#{subsequent_game.round}-above-player-spacer" %>"></span>
+  <p class="player"><%= (show_winner(subsequent_game.children[1])) %></p>
+</span>
+<span class="<%= "round-#{subsequent_game.round}-spacer" %>"></span>
+
+
+<span class="<%= "round-#{subsequent_game.round}-between-spacer" %>"></span>

@@ -8,58 +8,203 @@ p {
 	
 }
 
-p.even {
-	border-right: 3px solid #000;
+p.player {
+	padding-right: 6px;
+	vertical-align: middle;
+	float: middle;
 }
 
-p.odd {
-	padding-right: 6px;
+span.left_border, p.left_border {
+	border-left: 3px solid #000;
+}
+
+span.spacing {
+  padding-right: 6px;  
+}
+/*p.first_player {
+  padding-right: 6px;
 }
 
 span.odd-below {
-	border-right: 3px solid #000;
+  border-left: 3px solid #000;
 }
 
 span.even-above {
-	border-right: 3px solid #000;
+  border-left: 3px solid #000;
 }
-
+*/
 span {
 	display: block;
 }
 
-.round-1 {
+.player-spacer {
+	height: 19px;
+}
+
+.round-1-spacer {
 	height: 32px;
 }
 
+.round-2-spacer {
+	height: 32px;
+}
+.round-2-game {
+	height: 89px;
+}
+.round-2-above-player-spacer {
+	height: 21px;
+}
+.round-2-between-spacer {
+	height: 0px;
+}
+
+.round-3-spacer {
+	height: 72px;
+}
+.round-3-game {
+	height: 175px;
+}
+.round-3-above-player-spacer {
+	height: 70px;
+}
+.round-3-between-spacer {
+	height: 6px;
+}
+
+.round-4-spacer {
+	height: 161px;
+}
+.round-4-game {
+	height: 347px;
+}
+.round-4-above-player-spacer {
+	height: 140px;
+}
+.round-4-between-spacer {
+	height: 0px;
+}
+
+.round-5-spacer {
+	height: 320px;
+}
+.round-5-game {
+	height: 691px;
+}
+.round-5-above-player-spacer {
+	height: 280px;
+}
+.round-5-between-spacer {
+	height: 26px;
+}
+
+
+.round-6-spacer {
+	height: 619px;
+}
+.round-6-game {
+	height: 1379px;
+}
+.round-6-above-player-spacer {
+	height: 720px;
+}
+.round-6-between-spacer {
+	height: 116px;
+}
+
+
+.round-7-spacer {
+	height: 1358px;
+}
+.round-7-game {
+	height: 2755px;
+}
+.round-7-above-player-spacer {
+	height: 1358px;
+}
+.round-7-between-spacer {
+	height: 14px;
+}
+
+.round-8-spacer {
+	height: 2735px;
+}
+.round-8-game {
+	height: 5507px;
+}
+.round-8-above-player-spacer {
+	height: 2735px;
+}
+.round-8-between-spacer {
+	height: 12px;
+}
+
+.round-9-spacer {
+	height: 5200px;
+}
+.round-9-game {
+	height: 2755px;
+}
+.round-9-above-player-spacer {
+	height: 5200px;
+}
+.round-9-between-spacer {
+	height: 116px;
+}
+
+.round-10-spacer {
+	height: 10000px;
+}
+.round-10-game {
+	height: 2755px;
+}
+.round-10-above-player-spacer {
+	height: 10000px;
+}
+.round-10-between-spacer {
+	height: 116px;
+}
+
+/*.round-6-spacer {
+  height: 700px;
+}
+.round-6-game {
+  height: 630px;
+}
+.round-6-above-player-spacer {
+  height: 280px;
+}
+.round-6-between-spacer {
+  height: 12px;
+}
+
 .round-2 {
-	height: 75px;
+  height: 75px;
 }
 
 .round-3 {
-	height: 161px;
+  height: 161px;
 }
 
 .round-4 {
-	height: 333px;
+  height: 333px;
 }
 
 .round-5 {
-	height: 677px;
+  height: 677px;
 }
 
 .round-6 {
-	height: 1365px;
+  height: 1365px;
 }
 
 .round-7 {
-	height: 2741px;
+  height: 2741px;
 }
 
 .round-8 {
-	height: 5493px;
+  height: 5493px;
 }
 
 .round-9 {
-	height: 10997px;
-}
+  height: 10997px;
+}*/

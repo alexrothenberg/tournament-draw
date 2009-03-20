@@ -1,9 +1,9 @@
-<%- decorate = cycle('odd','even') %>
-<span class="round-<%= 1 %> <%= decorate %>-above"></span>
-<p class="<%= decorate %>"><%= first_game.player1.name %></p>
-<span class="round-<%= 1 %> <%= decorate %>-below"></span>
+<%- decorate = cycle('first_player','second_player') %>
+<span class="<%= "round-#{first_game.round}-spacer" %>"></span>
+<p class="<%= "round-#{first_game.round}-player" %>"><%= first_game.player1.name %></p>
+<span class="<%= "round-#{first_game.round}-spacer" %>"></span>
 
-<%- decorate = cycle('odd','even') %>
-<span class="round-<%= 1 %> <%= decorate %>-above"></span>
-<p class="<%= decorate %>"><%= first_game.player2.name %></p>
-<span class="round-<%= 1 %> <%= decorate %>-below"></span>
+<span class="<%= "round-#{first_game.round}-spacer" %>"></span>
+<p class="<%= "round-#{first_game.round}-player" %>"><%= first_game.player2.name %></p>
+<span class="<%= "round-#{first_game.round}-spacer" %>"></span>
+

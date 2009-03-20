@@ -57,6 +57,8 @@ class Game < ActiveRecord::Base
   def self.round_in_words(round)
     games_before_final = Game.final.round - round
     case games_before_final
+    when -1
+      'Champion'
     when 0
       'Finals'
     when 1
@@ -66,7 +68,7 @@ class Game < ActiveRecord::Base
     when 3
       'Round of 16'
     else
-      round.ordinalize
+      "Round #{round.ordinalize}"
     end
   end
 #   
