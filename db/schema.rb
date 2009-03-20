@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(:version => 20090320090110) do
   create_table "games", :force => true do |t|
     t.integer  "next_game_id"
     t.integer  "winner_id"
+    t.integer  "round"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"

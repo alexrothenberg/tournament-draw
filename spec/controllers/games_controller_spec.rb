@@ -9,9 +9,9 @@ describe GamesController do
   describe "responding to GET index" do
 
     it "should expose all games as @games" do
-      Game.should_receive(:final).and_return(mock_game)
+      Game.should_receive(:find_and_collect_by_round).and_return(games_by_round={1=>[mock_game, mock_game], 2=>[mock_game]})
       get :index
-      assigns[:championship_game].should == mock_game
+      assigns[:games_by_round].should == games_by_round
     end
 
   end

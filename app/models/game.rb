@@ -4,19 +4,31 @@ class Game < ActiveRecord::Base
   belongs_to :winner, :class_name=>'Player'
 
   alias_method :next_game, :parent
-  # class << self
-  #   alias_method :final, :root
-  # end
-  # def next_game
-  #   self.parent
-  # end
-  
-  # def next_game= game
-  #   next_game_id = game.id
-  # end
 
   def self.final
     self.root
+  end
+  
+  
+  def self.find_and_collect_by_round
+    collection = {}
+    round = self.final.round
+    collection[round] = [self.final]
+    while round > 0
+      round = round - 1
+      collection[round] = collect_previous_round collection[round+1]
+    end    
+    
+    collection
+  end
+  
+  def self.collect_previous_round games_in_round
+    games_in_round.collect {|game| game.children}.flatten
+  end
+
+  def round
+    return 1 if children.blank?
+    1 + children.first.round
   end
 
 #   alias_method :previous_games, :children
@@ -42,21 +54,21 @@ class Game < ActiveRecord::Base
 #     1 + first_players_previous_game.round
 #   end
 #   
-#   def self.round_in_words(round)
-#     games_before_final = Game.final.round - round
-#     case games_before_final
-#     when 0
-#       'Finals'
-#     when 1
-#       'Semifinals'
-#     when 2
-#       'Quarterfinals'
-#     when 3
-#       'Round of 16'
-#     else
-#       round.ordinalize
-#     end
-#   end
+  def self.round_in_words(round)
+    games_before_final = Game.final.round - round
+    case games_before_final
+    when 0
+      'Finals'
+    when 1
+      'Semifinals'
+    when 2
+      'Quarterfinals'
+    when 3
+      'Round of 16'
+    else
+      round.ordinalize
+    end
+  end
 #   
 #   def winner
 #     # return nil if game_for_winner.nil?

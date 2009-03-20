@@ -2,7 +2,7 @@ class GamesController < ApplicationController
   # GET /Games
   # GET /Games.xml
   def index
-    @championship_game = Game.final
+    @games_by_round = Game.find_and_collect_by_round
   end
 
   # GET /Games/1/edit

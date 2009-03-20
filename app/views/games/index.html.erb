@@ -1,12 +1,22 @@
 <h1>Tournament Draw</h1>
 
 
-<table>
-  <tr>
-    <% 1.upto(@championship_game.round) { |round|%><th><%= Game.round_in_words(round)%></th> <% }%>
-    <th>Champion</td>
-  </tr>
-  
-  <%= render :partial=> 'draw', :locals => {:game=>@championship_game}%>
-</table>
+
+<div class="span-24">
+	<h2>Tournament Draw</h2>
+</div>
+
+
+<% 1.upto(Game.final.round) do |round|%>
+  <%= render :partial=>@games_by_round[round]%>
+<% end %>
+
+<div class="span-3<%= " last"%>">
+	<br><%= Game.round_in_words(Game.final.round+1) %></br>
+  <%- decorate = cycle('odd','even')
+      player = Game.final.winner %>
+  <span class="round-<%= Game.final.round+1 %> <%= decorate %>-above"></span>
+  <p class="<%= decorate %>"><%= show_winner(Game.final) %></p>
+</div>
+
 

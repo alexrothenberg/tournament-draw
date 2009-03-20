@@ -3,6 +3,7 @@ class CreateGames < ActiveRecord::Migration
     create_table :games do |t|
       t.integer :next_game_id
       t.integer :winner_id
+      t.integer :round
 
       t.timestamps
     end

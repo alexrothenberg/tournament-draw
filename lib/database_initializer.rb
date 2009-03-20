@@ -15,21 +15,21 @@ class DatabaseInitializer
     Tournament.create_draw names
   end
 
-  def self.populate_development
-    purge
-    
-    player_names = (1..12).collect {|i| "Player #{i}" }
-    Tournament.create_draw player_names
-    
-    
-    #test not having power of 2 ... can we do byes?
-    bye = Game.first_round.last
-    other_bye = Game.first_round.last
-    second_round_game = bye.game_for_winner
-    second_round_game.update_attributes(:player2=>bye.player1)
-    bye.player2.destroy
-    bye.update_attributes(:player1=>nil, :player2=>nil)
-  end
+  # def self.populate_development
+  #   purge
+  #   
+  #   player_names = (1..12).collect {|i| "Player #{i}" }
+  #   Tournament.create_draw player_names
+  #   
+  #   
+  #   #test not having power of 2 ... can we do byes?
+  #   bye = Game.first_round.last
+  #   other_bye = Game.first_round.last
+  #   second_round_game = bye.game_for_winner
+  #   second_round_game.update_attributes(:player2=>bye.player1)
+  #   bye.player2.destroy
+  #   bye.update_attributes(:player1=>nil, :player2=>nil)
+  # end
   
   private
   

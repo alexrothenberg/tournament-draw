@@ -1,0 +1,65 @@
+
+p {
+	text-align:	right;
+	height: 19px;
+	border-bottom: 3px solid #000;
+	margin:0;
+	padding-right: 3px;
+	
+}
+
+p.even {
+	border-right: 3px solid #000;
+}
+
+p.odd {
+	padding-right: 6px;
+}
+
+span.odd-below {
+	border-right: 3px solid #000;
+}
+
+span.even-above {
+	border-right: 3px solid #000;
+}
+
+span {
+	display: block;
+}
+
+.round-1 {
+	height: 32px;
+}
+
+.round-2 {
+	height: 75px;
+}
+
+.round-3 {
+	height: 161px;
+}
+
+.round-4 {
+	height: 333px;
+}
+
+.round-5 {
+	height: 677px;
+}
+
+.round-6 {
+	height: 1365px;
+}
+
+.round-7 {
+	height: 2741px;
+}
+
+.round-8 {
+	height: 5493px;
+}
+
+.round-9 {
+	height: 10997px;
+}
