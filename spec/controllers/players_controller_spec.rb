@@ -125,7 +125,7 @@ describe PlayersController do
       it "should redirect to the player" do
         Player.stub!(:find).and_return(mock_player(:update_attributes => true))
         put :update, :id => "1"
-        response.should redirect_to(player_url(mock_player))
+        response.should redirect_to(players_url)
       end
 
     end

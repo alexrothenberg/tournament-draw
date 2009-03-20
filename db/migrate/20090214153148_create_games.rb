@@ -1,8 +1,7 @@
 class CreateGames < ActiveRecord::Migration
   def self.up
     create_table :games do |t|
-      t.integer :player1_id
-      t.integer :player2_id
+      t.integer :next_game_id
       t.integer :winner_id
 
       t.timestamps
