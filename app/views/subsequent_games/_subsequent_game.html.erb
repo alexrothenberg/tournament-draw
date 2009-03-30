@@ -1,22 +1,21 @@
-<span class="<%= "round-#{subsequent_game.round}-spacer" %>"></span>
+<% round = subsequent_game.round %>
+
+<span class="<%= "round-#{round}-spacer" %>"></span>
 <span class="<%= "player-spacer" %>"></span>
-<span class="<%= "round-#{subsequent_game.round}-game left_border" %>">
-  <span class="<%= "round-#{subsequent_game.round}-above-player-spacer" %>"></span>
-  <p class="player"><%= (show_winner(subsequent_game.children[0])) %></p>
+<span class="<%= "round-#{round}-game left_border" %>">
+  <span class="<%= "round-#{round}-above-player-spacer" %>"></span>
+  <p class="player"><%= show_first_player_in_game(subsequent_game) %></p>
 </span>
-<span class="<%= "round-#{subsequent_game.round}-spacer" %>"></span>
+<span class="<%= "round-#{round}-spacer" %>"></span>
+<span class="<%= "round-#{round}-between-spacer" %>"></span>
 
 
-<span class="<%= "round-#{subsequent_game.round}-between-spacer" %>"></span>
 
-
-<span class="<%= "round-#{subsequent_game.round}-spacer" %>"></span>
+<span class="<%= "round-#{round}-spacer" %>"></span>
 <span class="<%= "player-spacer" %>"></span>
-<span class="<%= "round-#{subsequent_game.round}-game left_border" %>">
-  <span class="<%= "round-#{subsequent_game.round}-above-player-spacer" %>"></span>
-  <p class="player"><%= (show_winner(subsequent_game.children[1])) %></p>
+<span class="<%= "round-#{round}-game left_border" %>">
+  <span class="<%= "round-#{round}-above-player-spacer" %>"></span>
+  <p class="player"><%= show_second_player_in_game(subsequent_game) %></p>
 </span>
-<span class="<%= "round-#{subsequent_game.round}-spacer" %>"></span>
-
-
-<span class="<%= "round-#{subsequent_game.round}-between-spacer" %>"></span>
+<span class="<%= "round-#{round}-spacer" %>"></span>
+<span class="<%= "round-#{round}-between-spacer" %>"></span>

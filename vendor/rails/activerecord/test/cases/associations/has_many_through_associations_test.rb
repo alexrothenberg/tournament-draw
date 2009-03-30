@@ -3,9 +3,6 @@ require 'models/post'
 require 'models/person'
 require 'models/reader'
 require 'models/comment'
-require 'models/tag'
-require 'models/tagging'
-require 'models/author'
 
 class HasManyThroughAssociationsTest < ActiveRecord::TestCase
   fixtures :posts, :readers, :people, :comments, :authors
@@ -204,10 +201,6 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
     assert_equal 2, people(:michael).posts.count(:include => :readers)
   end
 
-  def test_inner_join_with_quoted_table_name
-    assert_equal 2, people(:michael).jobs.size
-  end
-
   def test_get_ids
     assert_equal [posts(:welcome).id, posts(:authorless).id].sort, people(:michael).post_ids.sort
   end
@@ -228,10 +221,12 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
     assert !person.posts.loaded?
   end
 
-  def test_association_proxy_transaction_method_starts_transaction_in_association_class
-    Tag.expects(:transaction)
-    Post.find(:first).tags.transaction do
-      # nothing
+  uses_mocha 'mocking Tag.transaction' do
+    def test_association_proxy_transaction_method_starts_transaction_in_association_class
+      Tag.expects(:transaction)
+      Post.find(:first).tags.transaction do
+        # nothing
+      end
     end
   end
 

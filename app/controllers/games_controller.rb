@@ -15,12 +15,13 @@ class GamesController < ApplicationController
   def update
     @game = Game.find(params[:id])
 
-      if @game.update_attributes(params[:game])
-        flash[:notice] = 'Game was successfully updated.'
-        redirect_to(games_url) 
-      else
-        render :action => "edit" 
-      end
+    game_params = params[:first_game] || params[:subsequent_game]
+    if @game.update_attributes(game_params)
+      flash[:notice] = 'Game was successfully updated.'
+      redirect_to(games_url) 
+    else
+      render :action => "edit" 
+    end
   end
 
 end

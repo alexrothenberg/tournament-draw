@@ -17,14 +17,18 @@
 
 <div class="span-3<%= " last"%>">
 	<br><%= Game.round_in_words(Game.final.round+1) %></br>
-  <% subsequent_game = Game.final %>
-  <span class="<%= "round-#{subsequent_game.round+1}-spacer" %>"></span>
+  <% round = Game.final.round+1 %>
+
+  <span class="<%= "round-#{round}-spacer" %>"></span>
   <span class="<%= "player-spacer" %>"></span>
-  <span class="<%= "round-#{subsequent_game.round+1}-game left_border" %>">
-    <span class="<%= "round-#{subsequent_game.round+1}-above-player-spacer" %>"></span>
-    <p class="player"><%= (show_winner(Game.final)) %></p>
+  <span class="<%= "round-#{round}-game left_border" %>">
+    <span class="<%= "round-#{round}-above-player-spacer" %>"></span>
+    <p class="player"><%= show_player_in_game(Game.final, Game.final.winner, Game.final) %></p>
   </span>
-  <span class="<%= "round-#{subsequent_game.round}-spacer" %>"></span>
+  <span class="<%= "round-#{round}-spacer" %>"></span>
+  <span class="<%= "round-#{round}-between-spacer" %>"></span>
+  
+  
 
 
 </div>

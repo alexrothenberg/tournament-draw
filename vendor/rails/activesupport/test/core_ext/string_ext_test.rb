@@ -207,7 +207,7 @@ class StringBehaviourTest < Test::Unit::TestCase
   end
 end
 
-class CoreExtStringMultibyteTest < ActiveSupport::TestCase
+class CoreExtStringMultibyteTest < Test::Unit::TestCase
   UNICODE_STRING = 'こにちわ'
   ASCII_STRING = 'ohayo'
   BYTE_STRING = "\270\236\010\210\245"

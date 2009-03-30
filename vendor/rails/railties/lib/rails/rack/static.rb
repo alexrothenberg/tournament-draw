@@ -1,5 +1,3 @@
-require 'rack/utils'
-
 module Rails
   module Rack
     class Static

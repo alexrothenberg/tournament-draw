@@ -80,7 +80,6 @@ class ExclusivelyDependentFirm < Company
   has_one :account, :foreign_key => "firm_id", :dependent => :delete
   has_many :dependent_sanitized_conditional_clients_of_firm, :foreign_key => "client_of", :class_name => "Client", :order => "id", :dependent => :delete_all, :conditions => "name = 'BigShot Inc.'"
   has_many :dependent_conditional_clients_of_firm, :foreign_key => "client_of", :class_name => "Client", :order => "id", :dependent => :delete_all, :conditions => ["name = ?", 'BigShot Inc.']
-  has_many :dependent_hash_conditional_clients_of_firm, :foreign_key => "client_of", :class_name => "Client", :order => "id", :dependent => :delete_all, :conditions => {:name => 'BigShot Inc.'}
 end
 
 class Client < Company

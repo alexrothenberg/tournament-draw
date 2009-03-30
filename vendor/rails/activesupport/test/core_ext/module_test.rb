@@ -41,10 +41,6 @@ Invoice   = Struct.new(:client) do
   delegate :street, :city, :name, :to => :client, :prefix => :customer
 end
 
-Project   = Struct.new(:description, :person) do
-  delegate :name, :to => :person, :allow_nil => true
-end
-
 class Name
   delegate :upcase, :to => :@full_name
 
@@ -119,29 +115,6 @@ class ModuleTest < Test::Unit::TestCase
         delegate :name, :address, :to => :@client, :prefix => true
       end
     end
-  end
-
-  def test_delegation_with_allow_nil
-    rails = Project.new("Rails", Someone.new("David"))
-    assert_equal rails.name, "David"
-  end
-
-  def test_delegation_with_allow_nil_and_nil_value
-    rails = Project.new("Rails")
-    assert_nil rails.name
-  end
-
-  def test_delegation_with_allow_nil_and_nil_value_and_prefix
-    Project.class_eval do
-      delegate :name, :to => :person, :allow_nil => true, :prefix => true
-    end
-    rails = Project.new("Rails")
-    assert_nil rails.person_name
-  end
-
-  def test_delegation_without_allow_nil_and_nil_value
-    david = Someone.new("David")
-    assert_raises(NoMethodError) { david.street }
   end
 
   def test_parent

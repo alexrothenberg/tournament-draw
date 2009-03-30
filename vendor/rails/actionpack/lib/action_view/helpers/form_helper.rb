@@ -269,12 +269,10 @@ module ActionView
         options[:url] ||= polymorphic_path(object_or_array)
       end
 
-      # Creates a scope around a specific model object like form_for, but
-      # doesn't create the form tags themselves. This makes fields_for suitable
-      # for specifying additional model objects in the same form.
+      # Creates a scope around a specific model object like form_for, but doesn't create the form tags themselves. This makes
+      # fields_for suitable for specifying additional model objects in the same form:
       #
-      # === Generic Examples
-      #
+      # ==== Examples
       #   <% form_for @person, :url => { :action => "update" } do |person_form| %>
       #     First name: <%= person_form.text_field :first_name %>
       #     Last name : <%= person_form.text_field :last_name %>
@@ -284,166 +282,20 @@ module ActionView
       #     <% end %>
       #   <% end %>
       #
-      # ...or if you have an object that needs to be represented as a different
-      # parameter, like a Client that acts as a Person:
+      # ...or if you have an object that needs to be represented as a different parameter, like a Client that acts as a Person:
       #
       #   <% fields_for :person, @client do |permission_fields| %>
       #     Admin?: <%= permission_fields.check_box :admin %>
       #   <% end %>
       #
-      # ...or if you don't have an object, just a name of the parameter:
+      # ...or if you don't have an object, just a name of the parameter
       #
       #   <% fields_for :person do |permission_fields| %>
       #     Admin?: <%= permission_fields.check_box :admin %>
       #   <% end %>
       #
-      # Note: This also works for the methods in FormOptionHelper and
-      # DateHelper that are designed to work with an object as base, like
-      # FormOptionHelper#collection_select and DateHelper#datetime_select.
-      #
-      # === Nested Attributes Examples
-      #
-      # When the object belonging to the current scope has a nested attribute
-      # writer for a certain attribute, fields_for will yield a new scope
-      # for that attribute. This allows you to create forms that set or change
-      # the attributes of a parent object and its associations in one go.
-      #
-      # Nested attribute writers are normal setter methods named after an
-      # association. The most common way of defining these writers is either
-      # with +accepts_nested_attributes_for+ in a model definition or by
-      # defining a method with the proper name. For example: the attribute
-      # writer for the association <tt>:address</tt> is called
-      # <tt>address_attributes=</tt>.
-      #
-      # Whether a one-to-one or one-to-many style form builder will be yielded
-      # depends on whether the normal reader method returns a _single_ object
-      # or an _array_ of objects.
-      #
-      # ==== One-to-one
-      #
-      # Consider a Person class which returns a _single_ Address from the
-      # <tt>address</tt> reader method and responds to the
-      # <tt>address_attributes=</tt> writer method:
-      #
-      #   class Person
-      #     def address
-      #       @address
-      #     end
-      #
-      #     def address_attributes=(attributes)
-      #       # Process the attributes hash
-      #     end
-      #   end
-      #
-      # This model can now be used with a nested fields_for, like so:
-      #
-      #   <% form_for @person, :url => { :action => "update" } do |person_form| %>
-      #     ...
-      #     <% person_form.fields_for :address do |address_fields| %>
-      #       Street  : <%= address_fields.text_field :street %>
-      #       Zip code: <%= address_fields.text_field :zip_code %>
-      #     <% end %>
-      #   <% end %>
-      #
-      # When address is already an association on a Person you can use
-      # +accepts_nested_attributes_for+ to define the writer method for you:
-      #
-      #   class Person < ActiveRecord::Base
-      #     has_one :address
-      #     accepts_nested_attributes_for :address
-      #   end
-      #
-      # If you want to destroy the associated model through the form, you have
-      # to enable it first using the <tt>:allow_destroy</tt> option for
-      # +accepts_nested_attributes_for+:
-      #
-      #   class Person < ActiveRecord::Base
-      #     has_one :address
-      #     accepts_nested_attributes_for :address, :allow_destroy => true
-      #   end
-      #
-      # Now, when you use a form element with the <tt>_delete</tt> parameter,
-      # with a value that evaluates to +true+, you will destroy the associated
-      # model (eg. 1, '1', true, or 'true'):
-      #
-      #   <% form_for @person, :url => { :action => "update" } do |person_form| %>
-      #     ...
-      #     <% person_form.fields_for :address do |address_fields| %>
-      #       ...
-      #       Delete: <%= address_fields.check_box :_delete %>
-      #     <% end %>
-      #   <% end %>
-      #
-      # ==== One-to-many
-      #
-      # Consider a Person class which returns an _array_ of Project instances
-      # from the <tt>projects</tt> reader method and responds to the
-      # <tt>projects_attributes=</tt> writer method:
-      #
-      #   class Person
-      #     def projects
-      #       [@project1, @project2]
-      #     end
-      #
-      #     def projects_attributes=(attributes)
-      #       # Process the attributes hash
-      #     end
-      #   end
-      #
-      # This model can now be used with a nested fields_for. The block given to
-      # the nested fields_for call will be repeated for each instance in the
-      # collection:
-      #
-      #   <% form_for @person, :url => { :action => "update" } do |person_form| %>
-      #     ...
-      #     <% person_form.fields_for :projects do |project_fields| %>
-      #       <% if project_fields.object.active? %>
-      #         Name: <%= project_fields.text_field :name %>
-      #       <% end %>
-      #     <% end %>
-      #   <% end %>
-      #
-      # It's also possible to specify the instance to be used:
-      #
-      #   <% form_for @person, :url => { :action => "update" } do |person_form| %>
-      #     ...
-      #     <% @person.projects.each do |project| %>
-      #       <% if project.active? %>
-      #         <% person_form.fields_for :projects, project do |project_fields| %>
-      #           Name: <%= project_fields.text_field :name %>
-      #         <% end %>
-      #       <% end %>
-      #     <% end %>
-      #   <% end %>
-      #
-      # When projects is already an association on Person you can use
-      # +accepts_nested_attributes_for+ to define the writer method for you:
-      #
-      #   class Person < ActiveRecord::Base
-      #     has_many :projects
-      #     accepts_nested_attributes_for :projects
-      #   end
-      #
-      # If you want to destroy any of the associated models through the
-      # form, you have to enable it first using the <tt>:allow_destroy</tt>
-      # option for +accepts_nested_attributes_for+:
-      #
-      #   class Person < ActiveRecord::Base
-      #     has_many :projects
-      #     accepts_nested_attributes_for :projects, :allow_destroy => true
-      #   end
-      #
-      # This will allow you to specify which models to destroy in the
-      # attributes hash by adding a form element for the <tt>_delete</tt>
-      # parameter with a value that evaluates to +true+
-      # (eg. 1, '1', true, or 'true'):
-      #
-      #   <% form_for @person, :url => { :action => "update" } do |person_form| %>
-      #     ...
-      #     <% person_form.fields_for :projects do |project_fields| %>
-      #       Delete: <%= project_fields.check_box :_delete %>
-      #     <% end %>
-      #   <% end %>
+      # Note: This also works for the methods in FormOptionHelper and DateHelper that are designed to work with an object as base,
+      # like FormOptionHelper#collection_select and DateHelper#datetime_select.
       def fields_for(record_or_name_or_array, *args, &block)
         raise ArgumentError, "Missing block" unless block_given?
         options = args.extract_options!
@@ -646,10 +498,8 @@ module ActionView
 
       # Returns a radio button tag for accessing a specified attribute (identified by +method+) on an object
       # assigned to the template (identified by +object+). If the current value of +method+ is +tag_value+ the
-      # radio button will be checked.
-      #
-      # To force the radio button to be checked pass <tt>:checked => true</tt> in the
-      # +options+ hash. You may pass HTML options there as well.
+      # radio button will be checked. Additional options on the input tag can be passed as a
+      # hash with +options+.
       #
       # ==== Examples
       #   # Let's say that @post.category returns "rails":
@@ -755,9 +605,7 @@ module ActionView
         end
         options["checked"] = "checked" if checked
         add_default_name_and_id(options)
-        hidden = tag("input", "name" => options["name"], "type" => "hidden", "value" => options['disabled'] && checked ? checked_value : unchecked_value)
-        checkbox = tag("input", options)
-        hidden + checkbox
+        tag("input", options) << tag("input", "name" => options["name"], "type" => "hidden", "value" => options['disabled'] && checked ? checked_value : unchecked_value)
       end
 
       def to_boolean_select_tag(options = {})
@@ -889,13 +737,9 @@ module ActionView
 
       (field_helpers - %w(label check_box radio_button fields_for)).each do |selector|
         src = <<-end_src
-          def #{selector}(method, options = {})  # def text_field(method, options = {})
-            @template.send(                      #   @template.send(
-              #{selector.inspect},               #     "text_field",
-              @object_name,                      #     @object_name,
-              method,                            #     method,
-              objectify_options(options))        #     objectify_options(options))
-          end                                    # end
+          def #{selector}(method, options = {})
+            @template.send(#{selector.inspect}, @object_name, method, objectify_options(options))
+          end
         end_src
         class_eval src, __FILE__, __LINE__
       end
@@ -912,11 +756,7 @@ module ActionView
 
         case record_or_name_or_array
         when String, Symbol
-          if nested_attributes_association?(record_or_name_or_array)
-            return fields_for_with_nested_attributes(record_or_name_or_array, args, block)
-          else
-            name = "#{object_name}#{index}[#{record_or_name_or_array}]"
-          end
+          name = "#{object_name}#{index}[#{record_or_name_or_array}]"
         when Array
           object = record_or_name_or_array.last
           name = "#{object_name}#{index}[#{ActionController::RecordIdentifier.singular_class_name(object)}]"
@@ -957,43 +797,6 @@ module ActionView
       private
         def objectify_options(options)
           @default_options.merge(options.merge(:object => @object))
-        end
-
-        def nested_attributes_association?(association_name)
-          @object.respond_to?("#{association_name}_attributes=")
-        end
-
-        def fields_for_with_nested_attributes(association_name, args, block)
-          name = "#{object_name}[#{association_name}_attributes]"
-          association = @object.send(association_name)
-          explicit_object = args.first if args.first.respond_to?(:new_record?)
-
-          if association.is_a?(Array)
-            children = explicit_object ? [explicit_object] : association
-            explicit_child_index = args.last[:child_index] if args.last.is_a?(Hash)
-
-            children.map do |child|
-              fields_for_nested_model("#{name}[#{explicit_child_index || nested_child_index}]", child, args, block)
-            end.join
-          else
-            fields_for_nested_model(name, explicit_object || association, args, block)
-          end
-        end
-
-        def fields_for_nested_model(name, object, args, block)
-          if object.new_record?
-            @template.fields_for(name, object, *args, &block)
-          else
-            @template.fields_for(name, object, *args) do |builder|
-              @template.concat builder.hidden_field(:id)
-              block.call(builder)
-            end
-          end
-        end
-
-        def nested_child_index
-          @nested_child_index ||= -1
-          @nested_child_index += 1
         end
     end
   end

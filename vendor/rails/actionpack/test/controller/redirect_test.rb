@@ -103,8 +103,12 @@ class RedirectController < ActionController::Base
     end
 end
 
-class RedirectTest < ActionController::TestCase
-  tests RedirectController
+class RedirectTest < Test::Unit::TestCase
+  def setup
+    @controller = RedirectController.new
+    @request    = ActionController::TestRequest.new
+    @response   = ActionController::TestResponse.new
+  end
 
   def test_simple_redirect
     get :simple_redirect
@@ -252,8 +256,12 @@ module ModuleTest
     end
   end
 
-  class ModuleRedirectTest < ActionController::TestCase
-    tests ModuleRedirectController
+  class ModuleRedirectTest < Test::Unit::TestCase
+    def setup
+      @controller = ModuleRedirectController.new
+      @request    = ActionController::TestRequest.new
+      @response   = ActionController::TestResponse.new
+    end
 
     def test_simple_redirect
       get :simple_redirect

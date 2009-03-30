@@ -5,6 +5,13 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/:action/:id'
 end
 
+# simulates cookie session store
+class FakeSessionDbMan
+  def self.generate_digest(data)
+    Digest::SHA1.hexdigest("secure")
+  end
+end
+
 # common controller actions
 module RequestForgeryProtectionActions
   def index
@@ -29,10 +36,29 @@ end
 # sample controllers
 class RequestForgeryProtectionController < ActionController::Base
   include RequestForgeryProtectionActions
+  protect_from_forgery :only => :index, :secret => 'abc'
+end
+
+class RequestForgeryProtectionWithoutSecretController < ActionController::Base
+  include RequestForgeryProtectionActions
+  protect_from_forgery
+end
+
+# no token is given, assume the cookie store is used
+class CsrfCookieMonsterController < ActionController::Base
+  include RequestForgeryProtectionActions
   protect_from_forgery :only => :index
 end
 
-class FreeCookieController < RequestForgeryProtectionController
+# sessions are turned off
+class SessionOffController < ActionController::Base
+  protect_from_forgery :secret => 'foobar'
+  session :off
+  def rescue_action(e) raise e end
+  include RequestForgeryProtectionActions
+end
+
+class FreeCookieController < CsrfCookieMonsterController
   self.allow_forgery_protection = false
   
   def index
@@ -204,28 +230,62 @@ end
 
 # OK let's get our test on
 
-class RequestForgeryProtectionControllerTest < ActionController::TestCase
+class RequestForgeryProtectionControllerTest < Test::Unit::TestCase
   include RequestForgeryProtectionTests
   def setup
     @controller = RequestForgeryProtectionController.new
     @request    = ActionController::TestRequest.new
     @request.format = :html
     @response   = ActionController::TestResponse.new
-    @token      = "cf50faa3fe97702ca1ae"
-
-    ActiveSupport::SecureRandom.stubs(:base64).returns(@token)
+    class << @request.session
+      def session_id() '123' end
+    end
+    @token = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA1'), 'abc', '123')
     ActionController::Base.request_forgery_protection_token = :authenticity_token
   end
 end
 
-class FreeCookieControllerTest < ActionController::TestCase
+class RequestForgeryProtectionWithoutSecretControllerTest < Test::Unit::TestCase
+  def setup
+    @controller = RequestForgeryProtectionWithoutSecretController.new
+    @request    = ActionController::TestRequest.new
+    @response   = ActionController::TestResponse.new
+    class << @request.session
+      def session_id() '123' end
+    end
+    @token = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA1'), 'abc', '123')
+    ActionController::Base.request_forgery_protection_token = :authenticity_token
+  end
+  
+  # def test_should_raise_error_without_secret
+  #   assert_raises ActionController::InvalidAuthenticityToken do
+  #     get :index
+  #   end
+  # end
+end
+
+class CsrfCookieMonsterControllerTest < Test::Unit::TestCase
+  include RequestForgeryProtectionTests
+  def setup
+    @controller = CsrfCookieMonsterController.new
+    @request    = ActionController::TestRequest.new
+    @response   = ActionController::TestResponse.new
+    class << @request.session
+      attr_accessor :dbman
+    end
+    # simulate a cookie session store
+    @request.session.dbman = FakeSessionDbMan
+    @token = Digest::SHA1.hexdigest("secure")
+    ActionController::Base.request_forgery_protection_token = :authenticity_token
+  end
+end
+
+class FreeCookieControllerTest < Test::Unit::TestCase
   def setup
     @controller = FreeCookieController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
-    @token      = "cf50faa3fe97702ca1ae"
-
-    ActiveSupport::SecureRandom.stubs(:base64).returns(@token)
+    @token      = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA1'), 'abc', '123')
   end
   
   def test_should_not_render_form_with_token_tag
@@ -243,4 +303,25 @@ class FreeCookieControllerTest < ActionController::TestCase
       assert_nothing_raised { send(method, :index)}
     end
   end
+end
+
+class SessionOffControllerTest < Test::Unit::TestCase
+  def setup
+    @controller = SessionOffController.new
+    @request    = ActionController::TestRequest.new
+    @response   = ActionController::TestResponse.new
+    @token      = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA1'), 'abc', '123')
+  end
+
+  # TODO: Rewrite this test.
+  # This test was passing but for the wrong reason.
+  # Sessions aren't really being turned off, so an exception was raised
+  # because sessions weren't on - not because the token didn't match.
+  #
+  # def test_should_raise_correct_exception
+  #   @request.session = {} # session(:off) doesn't appear to work with controller tests
+  #   assert_raises(ActionController::InvalidAuthenticityToken) do
+  #     post :index, :authenticity_token => @token, :format => :html
+  #   end
+  # end
 end

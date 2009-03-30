@@ -289,6 +289,8 @@ class TestMailer < ActionMailer::Base
   end
 end
 
+uses_mocha 'ActionMailerTest' do
+
 class ActionMailerTest < Test::Unit::TestCase
   include ActionMailer::Quoting
 
@@ -387,8 +389,6 @@ class ActionMailerTest < Test::Unit::TestCase
   end
 
   def test_custom_templating_extension
-    assert ActionView::Template.template_handler_extensions.include?("haml"), "haml extension was not registered"
-
     # N.b., custom_templating_extension.text.plain.haml is expected to be in fixtures/test_mailer directory
     expected = new_mail
     expected.to      = @recipient
@@ -799,8 +799,6 @@ EOF
   end
 
   def test_implicitly_multipart_messages
-    assert ActionView::Template.template_handler_extensions.include?("bak"), "bak extension was not registered"
-
     mail = TestMailer.create_implicitly_multipart_example(@recipient)
     assert_equal 3, mail.parts.length
     assert_equal "1.0", mail.mime_version
@@ -814,8 +812,6 @@ EOF
   end
 
   def test_implicitly_multipart_messages_with_custom_order
-    assert ActionView::Template.template_handler_extensions.include?("bak"), "bak extension was not registered"
-
     mail = TestMailer.create_implicitly_multipart_example(@recipient, nil, ["text/yaml", "text/plain"])
     assert_equal 3, mail.parts.length
     assert_equal "text/html", mail.parts[0].content_type
@@ -919,8 +915,6 @@ EOF
   def test_multipart_with_template_path_with_dots
     mail = FunkyPathMailer.create_multipart_with_template_path_with_dots(@recipient)
     assert_equal 2, mail.parts.length
-    assert_equal 'text/plain', mail.parts[0].content_type
-    assert_equal 'utf-8', mail.parts[0].charset
   end
 
   def test_custom_content_type_attributes
@@ -938,7 +932,6 @@ EOF
     ActionMailer::Base.delivery_method = :smtp
     TestMailer.deliver_return_path
     assert_match %r{^Return-Path: <another@somewhere.test>}, MockSMTP.deliveries[0][0]
-    assert_equal "another@somewhere.test", MockSMTP.deliveries[0][1].to_s
   end
 
   def test_body_is_stored_as_an_ivar
@@ -947,7 +940,6 @@ EOF
   end
 
   def test_starttls_is_enabled_if_supported
-    ActionMailer::Base.smtp_settings[:enable_starttls_auto] = true
     MockSMTP.any_instance.expects(:respond_to?).with(:enable_starttls_auto).returns(true)
     MockSMTP.any_instance.expects(:enable_starttls_auto)
     ActionMailer::Base.delivery_method = :smtp
@@ -955,34 +947,25 @@ EOF
   end
 
   def test_starttls_is_disabled_if_not_supported
-    ActionMailer::Base.smtp_settings[:enable_starttls_auto] = true
     MockSMTP.any_instance.expects(:respond_to?).with(:enable_starttls_auto).returns(false)
     MockSMTP.any_instance.expects(:enable_starttls_auto).never
     ActionMailer::Base.delivery_method = :smtp
     TestMailer.deliver_signed_up(@recipient)
   end
-
-  def test_starttls_is_not_enabled
-    ActionMailer::Base.smtp_settings[:enable_starttls_auto] = false
-    MockSMTP.any_instance.expects(:respond_to?).never
-    MockSMTP.any_instance.expects(:enable_starttls_auto).never
-    ActionMailer::Base.delivery_method = :smtp
-    TestMailer.deliver_signed_up(@recipient)
-  ensure
-    ActionMailer::Base.smtp_settings[:enable_starttls_auto] = true
-  end
 end
+
+end # uses_mocha
 
 class InheritableTemplateRootTest < Test::Unit::TestCase
   def test_attr
     expected = "#{File.dirname(__FILE__)}/fixtures/path.with.dots"
-    assert_equal expected, FunkyPathMailer.template_root.to_s
+    assert_equal expected, FunkyPathMailer.template_root
 
     sub = Class.new(FunkyPathMailer)
     sub.template_root = 'test/path'
 
-    assert_equal 'test/path', sub.template_root.to_s
-    assert_equal expected, FunkyPathMailer.template_root.to_s
+    assert_equal 'test/path', sub.template_root
+    assert_equal expected, FunkyPathMailer.template_root
   end
 end
 

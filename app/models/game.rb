@@ -54,6 +54,11 @@ class Game < ActiveRecord::Base
 #     1 + first_players_previous_game.round
 #   end
 #   
+
+  def ready_to_play?
+    player1 and player2
+  end
+  
   def self.round_in_words(round)
     games_before_final = Game.final.round - round
     case games_before_final
