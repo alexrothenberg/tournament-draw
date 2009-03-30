@@ -30,10 +30,16 @@ describe GamesController do
 
     describe "with valid params" do
 
-      it "should update the requested game" do
+      it "should update the requested first game " do
         Game.should_receive(:find).with("37").and_return(mock_game)
         mock_game.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :game => {:these => 'params'}
+        put :update, :id => "37", :first_game => {:these => 'params'}
+      end
+
+      it "should update the requested subsequent game " do
+        Game.should_receive(:find).with("37").and_return(mock_game)
+        mock_game.should_receive(:update_attributes).with({'these' => 'params'})
+        put :update, :id => "37", :subsequent_game => {:these => 'params'}
       end
 
       it "should expose the requested game as @game" do
@@ -52,10 +58,16 @@ describe GamesController do
     
     describe "with invalid params" do
 
-      it "should update the requested game" do
+      it "should update the requested first game" do
         Game.should_receive(:find).with("37").and_return(mock_game)
         mock_game.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :game => {:these => 'params'}
+        put :update, :id => "37", :first_game => {:these => 'params'}
+      end
+
+      it "should update the requested subsequent game" do
+        Game.should_receive(:find).with("37").and_return(mock_game)
+        mock_game.should_receive(:update_attributes).with({'these' => 'params'})
+        put :update, :id => "37", :subsequent_game => {:these => 'params'}
       end
 
       it "should expose the game as @game" do
